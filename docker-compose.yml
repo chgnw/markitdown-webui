@@ -13,3 +13,25 @@ services:
       # keep it above 3 × MAX_FILE_MB (three conversions run at once).
       - /tmp:size=512m
     restart: unless-stopped
+
+# App info for the ZimaOS (CasaOS) dashboard, so it shows this as an app tile.
+# Docker Compose ignores it. Keep port_map equal to the left port in "ports" above.
+x-casaos:
+  id: io.github.chgnw.markitdown-webui
+  main: markitdown-web-ui
+  index: /
+  port_map: "8080"
+  scheme: http
+  icon: https://raw.githubusercontent.com/chgnw/markitdown-webui/main/frontend/favicon.svg
+  title:
+    en_US: MarkItDown Web UI
+  tagline:
+    en_US: Convert documents and web pages to Markdown
+  description:
+    en_US: Converts PDF, Word, PowerPoint, Excel, Outlook, EPUB, HTML and text files, and web pages, to Markdown. The engine is Microsoft's MarkItDown.
+  author: chgnw
+  developer: chgnw
+  category: Productivity
+  architectures:
+    - amd64
+    - arm64
