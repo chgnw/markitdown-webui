@@ -1,0 +1,25 @@
+# Docs stay local: README is the only markdown file that gets pushed
+*.md
+!/README.md
+
+# Local tool and editor folders
+.claude/
+.github/
+.impeccable/
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Secrets and OS files
+.env
+.env.*
+.DS_Store

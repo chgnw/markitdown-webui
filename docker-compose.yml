@@ -1,0 +1,15 @@
+services:
+  markitdown-web-ui:
+    build: .
+    image: markitdown-web-ui
+    container_name: markitdown-web-ui
+    ports:
+      - "8080:8000"
+    environment:
+      MAX_FILE_MB: "50"
+      CONVERT_TIMEOUT_S: "120"
+    tmpfs:
+      # Uploads are spooled here while they're converted. It lives in RAM, so it's capped;
+      # keep it above 3 × MAX_FILE_MB (three conversions run at once).
+      - /tmp:size=512m
+    restart: unless-stopped

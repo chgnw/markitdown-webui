@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101114" media="(prefers-color-scheme: dark)">
+  <title>MarkItDown Web UI</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="vendor/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand">
+        <svg class="brand__mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="M6.5 15V9l2.5 3 2.5-3v6M15.5 9v6m-2-2 2 2 2-2"/></svg>
+        <h1 class="brand__name">MarkItDown Web UI</h1>
+        <span class="engine" id="engine" data-state="loading" title="Engine version from /api/health">
+          <span class="engine__dot" aria-hidden="true"></span><span id="engine-text">Connecting…</span>
+        </span>
+      </div>
+      <p class="tally" id="tally" aria-live="polite"></p>
+    </div>
+  </header>
+
+  <main class="layout">
+    <div class="col col--input">
+      <section class="panel" aria-labelledby="add-title">
+        <div class="panel__head">
+          <h2 class="panel__title" id="add-title">Add files &amp; URLs</h2>
+        </div>
+        <div class="panel__body add">
+          <label class="drop" id="drop" for="file-input">
+            <input id="file-input" class="visually-hidden" type="file" multiple>
+            <span class="drop__icon" data-icon="upload" aria-hidden="true"></span>
+            <span class="drop__title"><span class="only-fine">Drop files here or </span><span class="drop__link">choose files</span></span>
+            <span class="drop__hint">PDF, Word, PowerPoint, Excel, Outlook, EPUB, HTML, text. Pick several at once; folders and images aren't accepted.</span>
+          </label>
+          <p class="notice" id="drop-notice" role="status" hidden></p>
+
+          <form class="url" id="url-form" novalidate>
+            <label class="field-label" for="url-input">URLs <span class="field-label__aside">one per line: web pages, YouTube</span></label>
+            <textarea id="url-input" class="input url__input" rows="2" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="https://example.com/article"></textarea>
+            <div class="url__foot">
+              <p class="url__error" id="url-error" role="alert" hidden></p>
+              <button type="submit" class="btn btn--secondary" id="url-add">
+                <span data-icon="link" aria-hidden="true"></span>Add URLs
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="queue-title">
+        <div class="panel__head">
+          <h2 class="panel__title" id="queue-title">Queue <span class="count" id="queue-count">0</span></h2>
+        </div>
+        <ul class="list list--queue" id="queue-list" aria-label="Queued items"></ul>
+        <div class="empty" id="queue-empty">
+          <p class="empty__title">Nothing queued</p>
+          <p class="empty__text">Add files or URLs above. Each item is converted separately, three at a time, so one failure won't stop the rest.</p>
+        </div>
+        <div class="actions" id="queue-actions">
+          <button type="button" class="btn btn--primary" id="convert" disabled>
+            <span data-icon="play" aria-hidden="true"></span><span id="convert-label">Convert all</span>
+          </button>
+          <button type="button" class="btn btn--ghost" id="stop" hidden>
+            <span data-icon="stop" aria-hidden="true"></span>Stop
+          </button>
+          <button type="button" class="btn btn--ghost" id="clear" disabled>Clear</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="col col--output">
+      <section class="panel panel--results" aria-labelledby="results-title">
+        <div class="panel__head">
+          <h2 class="panel__title" id="results-title">Results <span class="count" id="results-count">0</span></h2>
+          <button type="button" class="btn btn--secondary btn--sm" id="zip" disabled>
+            <span data-icon="archive" aria-hidden="true"></span>Download ZIP
+          </button>
+        </div>
+        <ul class="list" id="results-list" aria-label="Converted items"></ul>
+        <div class="empty" id="results-empty">
+          <p class="empty__title">No results yet</p>
+          <p class="empty__text"><span class="only-fine">Hover a result to preview it, click to open it in a new tab.</span><span class="only-coarse">Tap a result to preview it and open it in a new tab.</span> Download ZIP bundles every successful result into one folder.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="peek" id="peek" role="dialog" aria-modal="false" hidden></div>
+
+  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+    <div class="sheet__head">
+      <div class="sheet__titles">
+        <h2 class="sheet__title" id="sheet-title"></h2>
+        <p class="sheet__meta" id="sheet-meta"></p>
+      </div>
+      <button type="button" class="icon-btn" id="sheet-close" aria-label="Close preview"><span data-icon="x" aria-hidden="true"></span></button>
+    </div>
+    <div class="sheet__body" id="sheet-body"></div>
+    <div class="sheet__actions" id="sheet-actions"></div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

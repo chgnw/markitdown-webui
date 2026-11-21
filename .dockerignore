@@ -1,0 +1,9 @@
+.impeccable
+.git
+.github
+**/__pycache__
+**/.DS_Store
+dev
+tests
+*.md
+!frontend/**
